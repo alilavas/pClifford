@@ -2,8 +2,7 @@
 #-------------------------------------------------
 
 function rank_p!(A,p)
-    # find rank(A) in Z_p
-    # changes A 
+    #find rank(A) in Z_p
     m,n=size(A)
     lastpivotcol=0
 
@@ -12,7 +11,7 @@ function rank_p!(A,p)
             if A[i,j]!=0
                 for jj in (j+1):n
                     if A[i,jj]!=0
-                        A[i:end,jj]=@views mod.( A[i:end,jj].+  A[i:end,j].*(multiplicativeInverse(A[i,j],p)*(p-A[i,jj])),p)
+                        A[i:end,jj]=@views mod.( A[i:end,jj]+  A[i:end,j]*(invmod(A[i,j],p)*(p-A[i,jj])),p)
                     end
                 end
                 swapcol!(A,j,lastpivotcol+1,i)
@@ -24,6 +23,7 @@ function rank_p!(A,p)
 
     return lastpivotcol
 end
+
 #-------------------------------------------------
 #-------------------------------------------------
 function swapcol!(A,i,j,toprow=1)
